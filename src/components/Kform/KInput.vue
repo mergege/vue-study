@@ -9,7 +9,9 @@
 </template>
 
 <script>
+import emitter from '../../mixins/emitter.js'
 export default {
+  mixins: [emitter],
   inheritAttrs: false, // 避免展开属性（type/placeholder）到根元素div上
   inject: ['form'],
   props: {
@@ -24,7 +26,10 @@ export default {
       // 派发一个事件：告知父组件input的值发生了改变
       this.$emit("input", e.target.value)
       // 派发一个事件通知校验
-      this.$parent.$emit('validate')
+      // 问题：这里用$parent会存在耦合，如果Kinput和KInputItem中间加了一层div就出错
+      // 谁派发，谁监听，这里是$parent派发的
+      // this.$parent.$emit('validate')
+      this.dispatch('KInputItem', 'validate')
     }
   },
 }

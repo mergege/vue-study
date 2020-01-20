@@ -5,37 +5,38 @@
             :rules="rules"
             ref="loginForm">
       <!-- 用户名 -->
-      <k-input-item label="用户名"
-                    prop="userName">
+      <k-form-item label="用户名"
+                   prop="userName">
         <K-input type="text"
                  placeholder="请输入用户名"
                  v-model="userInfo.userName">
         </K-input>
-      </k-input-item>
+      </k-form-item>
       <!-- 密码 -->
-      <k-input-item label="密码"
-                    prop="passWord">
+      <k-form-item label="密码"
+                   prop="passWord">
         <K-input type="password"
                  placeholder="请输入密码"
                  v-model="userInfo.passWord">
         </K-input>
-      </k-input-item>
+      </k-form-item>
       <!-- 确定按钮也是表单的一部分 -->
-      <k-input-item>
+      <k-form-item>
         <button @click="login">确定</button>
-      </k-input-item>
+      </k-form-item>
     </k-form>
   </div>
 </template>
 
 <script>
 import KInput from './KInput.vue'
-import KInputItem from './KInputItem.vue'
+import KFormItem from './KFormItem.vue'
 import KForm from './KForm.vue'
+import Notice from '../Notice.vue'
 export default {
   components: {
     KInput,
-    KInputItem,
+    KFormItem,
     KForm
   },
   data () {
@@ -54,9 +55,18 @@ export default {
     login () {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          alert('submit success')
+          // alert('submit success')
+          this.$create(Notice, {
+            duration: 2000,
+            title: '社会提醒',
+            content: 'submit success'
+          }).show()
         } else {
-          alert('fail')
+          this.$create(Notice, {
+            duration: 2000,
+            title: '社会提醒',
+            content: 'fail'
+          }).show()
         }
       })
     }
