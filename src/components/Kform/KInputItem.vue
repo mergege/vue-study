@@ -10,8 +10,14 @@
 
 <script>
 import Schema from 'async-validator'
+// import { thistle } from 'color-name'
+
+import emitter from '@/mixins/emitter.js'
 export default {
+  name: 'KInputItem',
+  componentName: 'KInputItem',
   inject: ['form'],
+  mixins: [emitter],
   props: {
     label: {
       type: String,
@@ -22,19 +28,30 @@ export default {
       default: ''
     }
   },
-  data () {
+  data() {
     return {
       error: '' // 为空表示校验通过
     }
   },
-  mounted () {
+  mounted() {
     // 这个生命周期里子组件已经渲染完成，slot已经被替代成子组件
     this.$on('validate', () => {
       this.validate()
     })
+
+    // 派发事件给KForm,告诉KForm添加kInputItem实例
+    if (this.prop) {
+      // 有属性才需要校验，提交按钮组件不需要
+      try {
+        // this.dispatch('KForm', 'kkb.form.addValid', this)
+        this.dispatch('KForm', 'kkb.form.addValid', [this])
+      } catch (error) {
+        console.log(error)
+      }
+    }
   },
   methods: {
-    validate () {
+    validate() {
       // 规则
       const rules = this.form.rules[this.prop]
       // 要校验的值
@@ -52,9 +69,8 @@ export default {
           this.error = ''
         }
       })
-
     }
-  },
+  }
 }
 </script>
 
