@@ -1,21 +1,37 @@
 let Vue
 // 任务1.实现一个插件：插件要有install方法
-
 class VueRouter {
   constructor(options) {
+    // 这里的this是构造函数VueRouter的实例
     this.$options = options
-    console.log(11111, this.$options)
+    // 需要创建current响应式的属性
+    Vue.util.defineReactive(this, 'current', '/')
+    // this.current = '/'
+    // 任务3：监听地址栏路由变化
+    window.addEventListener('hashchange', this.hashChange.bind(this)) //因为是window调用，所以这里需要bind一下hashChange的this
+    window.addEventListener('load', this.hashChange.bind(this))
+    // 用箭头函数不需要bind
+    // window.addEventListener('load', () =>{
+    //   console.log(window.location.hash)
+    //   this.current = window.location.hash.slice(1)
+    //   console.log(this.current)
+    // })
+  }
+  hashChange() {
+    console.log(window.location.hash)
+    this.current = window.location.hash.slice(1)
+    console.log(this.current)
   }
 }
 
 VueRouter.install = function(_Vue) {
   Vue = _Vue
-
   // 挂载$router
   // 如何才能获取router
   Vue.mixin({
     beforeCreate() {
       // 确保是根组件才添加
+      // 这里的this是Vue组件实例
       if (this.$options.router) {
         Vue.prototype.$router = this.$options.router
       }
@@ -43,7 +59,19 @@ VueRouter.install = function(_Vue) {
       )
     }
   })
-  Vue.component('router-view', {})
+  Vue.component('router-view', {
+    // 这个render函数只会在创建的时候调用，如何做到current变化就调用，这个时候需要current是响应式的
+    render(h) {
+      console.log(4444, this.$router)
+      let component = null
+      this.$router.$options.routes.forEach(route => {
+        if (route.path === this.$router.current) {
+          component = route.component
+        }
+      })
+      return h(component)
+    }
+  })
 }
 
 export default VueRouter
