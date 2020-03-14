@@ -18,7 +18,16 @@ class VueRouter {
     // })
     this.$options = options
     // 需要创建current响应式的属性
+    // 方法1
     Vue.util.defineReactive(this, 'current', '/')
+    // 方法2
+    // this.app = new Vue({
+    //   dada() {
+    //     return {
+    //       current: '/'
+    //     }
+    //   }
+    // })
     // this.current = '/' // 这个current属性是router实例里的
     // 任务3：监听地址栏路由变化
     window.addEventListener('hashchange', this.hashChange.bind(this)) //因为是window调用，所以这里需要bind一下hashChange的this
