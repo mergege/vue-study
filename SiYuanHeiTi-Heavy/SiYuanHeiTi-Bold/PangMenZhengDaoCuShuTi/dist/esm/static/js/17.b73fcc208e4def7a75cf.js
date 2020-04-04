@@ -1,0 +1,2 @@
+webpackJsonp([17],{Tf7v:function(t,e){},"x+Lp":function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var i={activated:function(){location.href="https://m.youku.com/video/id_XMzU4MTAzNjY3Mg==.html?spm=a2h3j.8428770.3416059.1&source=&ishttps=1"}},c={render:function(){var t=this.$createElement;return(this._self._c||t)("div")},staticRenderFns:[]};var o=n("VU/8")(i,c,!1,function(t){n("Tf7v")},"data-v-6b5ed320",null);e.default=o.exports}});
+//# sourceMappingURL=17.b73fcc208e4def7a75cf.js.map
