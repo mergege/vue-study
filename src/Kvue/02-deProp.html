@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+      // 响应式
+      const obj = {}
+
+      function defineReactive(obj, key, val) {
+        // 对传入的obj进行访问拦截
+        Object.defineProperty(obj, key, {
+          get() {
+            console.log('get:' + val)
+            return val
+          },
+          set(newVal) {
+            if (newVal !== val) {
+              val = newVal
+              console.log('set:' + key + ':' + newVal)
+              update()
+            }
+          }
+        })
+      }
+      function update() {
+        const app = document.getElementById('app')
+        app.innerHTML = obj.foo
+      }
+      defineReactive(obj, 'foo', '')
+      obj.foo = new Date().toLocaleTimeString()
+      setInterval(() => {
+        obj.foo = new Date().toLocaleTimeString()
+      }, 1000)
+    </script>
+  </body>
+</html>
