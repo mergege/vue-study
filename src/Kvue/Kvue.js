@@ -17,9 +17,12 @@ class Kvue {
 // 根据对象数据类型进行不同的响应化操作
 class Observer {
   constructor(value) {
-    if (typeof value === 'object') {
+    if (Array.isArray(value)) {
+      this.arrayWalk(value)
+    } else if (typeof value === 'object') {
       this.walk(value)
     }
+    this.arrayProto = null
   }
   // 对象类型响应化
   walk(obj) {
@@ -28,6 +31,37 @@ class Observer {
     })
   }
   // 数组类型响应化，待补充
+  arrayWalk(obj) {
+    obj.__proto__ = arrayProto
+    // 遍历数组，每一项循环响应化
+    for (let i = 0; i < obj.length; i++) {
+      observe(obj[i])
+    }
+  }
+
+  updateArrayProto() {
+    // 覆盖数组的7个方法
+    const originalProto = Array.prototype
+    // 备份一份，修改备份功能
+    this.arrayProto = Object.create(originalProto)
+    let arrayMethods = [
+      'push',
+      'pop',
+      'shift',
+      'unshift',
+      'splice',
+      'reverse',
+      'sort'
+    ]
+    arrayMethods.forEach(method => {
+      this.arrayProto[method] = function() {
+        // 先调用原数组方法
+        originalProto[method].apply(this, arguments)
+        // 执行数组响应化
+        console.log('数组变更' + method + '操作')
+      }
+    })
+  }
 }
 
 // Watcher类:保存更新函数，值发生变化调用更新函数

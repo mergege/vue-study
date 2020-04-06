@@ -63,6 +63,11 @@ class Compiler {
         // 这里指令调用了对应的方法：k-text:this.text()
         this[dir] && this[dir](node, exp)
       }
+      // 如果是事件@click="onClick"
+      if (this.isEvent(attrName)) {
+        let dir = attrName.substring(1)
+        this.eventHandler(node, exp, dir)
+      }
     })
   }
   // 初始化并且创建Watcher实例观察者：值再次变化的时候执行观察事先设置的函数
@@ -85,6 +90,10 @@ class Compiler {
     console.log('11111', attrName)
     return attrName.indexOf('k-') === 0
   }
+
+  isEvent(attrName) {
+    return attrName.indexOf('@') === 0
+  }
   // k-text
   text(node, exp) {
     this.update(node, exp, 'text')
@@ -93,7 +102,25 @@ class Compiler {
   html(node, exp) {
     this.update(node, exp, 'html')
   }
+  // k-model 双向绑定:语法糖1.设置value；2.事件监听input
+  model(node, exp) {
+    // 数据变化更新dom
+    this.update(node, exp, 'model')
+    // 事件触发反更新vue实例的值
+    node.addEventListener('input', e => {
+      this.$vm[exp] = e.target.value
+    })
+  }
   htmlUpdater(node, value) {
     node.innerHTML = value
+  }
+  modelUpdater(node, value) {
+    node.value = value
+  }
+
+  eventHandler(node, exp, dir) {
+    // methods: {onClick: function(){}}
+    const fn = this.$vm.$options.methods && this.$vm.$options.methods[exp]
+    node.addEventListener(dir, fn.bind(this.$vm))
   }
 }

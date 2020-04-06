@@ -11,24 +11,32 @@
     <script src="./Kvue.js"></script>
     <div id="app">
       <!-- 插值表达式 -->
-      <p>{{ counter }}</p>
+      <p @click="add">{{ counter }}</p>
       <!-- k-text指令 -->
       <p k-text="counter"></p>
       <!-- k-html指令 -->
       <p k-html="desc"></p>
+      <input type="text" k-model="name" />
+      <p>{{ name }}</p>
     </div>
     <script>
       const app = new Kvue({
         el: '#app',
         data: {
           counter: 1,
+          name: 'tokm',
           desc: '<span style="color:red">Kvue可以吧？</span>'
+        },
+        methods: {
+          add: function() {
+            this.counter += 2
+          }
         }
       })
       console.log(app)
-      setInterval(() => {
-        app.counter++
-      }, 1000)
+      // setInterval(() => {
+      //   app.counter++
+      // }, 1000)
     </script>
   </body>
 </html>
