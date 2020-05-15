@@ -1,16 +1,16 @@
 import Vue from 'vue'
 import App from './App.vue'
-import create from '@/util/create.js'
-import router from './KRouter'
-import store from './Kstore'
+import { createRouter } from './router/index'
 
 Vue.config.productionTip = false
-// 事件总线方式
-Vue.prototype.$bus = new Vue()
-Vue.prototype.$create = create
-
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+export function createApp (context) {
+  // 1、创建路由器实例
+  const router = createRouter()
+  // 2、创建Vue实例
+  const app = new Vue({
+    router,
+    context, // 上下文用于给渲染器传递参数
+    render: h => h(App)
+  })
+  return { app, router }
+}
