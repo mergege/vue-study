@@ -7,11 +7,11 @@ import About from '../views/About.vue'
 Vue.use(VueRouter)
 
 // 修改1:路由这里是工厂函数
-export function createRouter () {
+export function createRouter() {
   return new VueRouter({
     routes: [
       { path: '/', component: Home },
-      { path: '/about', component: About },
+      { path: '/about', component: About }
     ]
   })
 }

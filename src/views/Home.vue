@@ -5,8 +5,8 @@
     <!-- <communication></communication> -->
     <!-- <slot-example></slot-example> -->
     <!-- <Kform-template></Kform-template> -->
-    <p @click="$store.commit('add', 5)">counter: {{$store.state.counter}}</p>
-    <p @click="$store.dispatch('add', 4)">asyc counter: {{$store.state.counter}}</p>
+    <!-- <p @click="$store.commit('add', 5)">counter: {{$store.state.counter}}</p>
+    <p @click="$store.dispatch('add', 4)">asyc counter: {{$store.state.counter}}</p>-->
     <!-- <p>dubbleCounter: {{$store.getters.doubleCounter}}</p> -->
   </div>
 </template>
@@ -23,9 +23,6 @@ export default {
     // communication,
     // SlotExample,
     // KformTemplate
-  },
-  created() {
-    this.$store.state = {}
   }
 }
 </script>
